@@ -1,0 +1,120 @@
+{% extends 'base.html'%}{% block script %}
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+<script>
+    window.onload = async function () {
+        var numGender = await '{{numGender}}'.split(',');
+        var CareerVar = await '{{numCareer}}'.split(',');
+        graphCharts(numGender, CareerVar);
+
+        function graphCharts(numGender, CareerVar){
+            var Genderopt = {
+            animationEnabled: true,
+            title: {
+                text: "性別",
+                fontColor: "black",
+                fontFamily: "Microsoft JhengHei",
+                fontWeight: "bold",
+                fontSize: 20
+            },
+            legend: {
+                horizontalAlign: "center",
+                verticalAlign: "top",
+                fontSize: 16,
+                fontFamily: "Microsoft JhengHei",
+            },
+            data: [{
+                type: "pie",
+                showInLegend: true,
+                toolTipContent: "{name}: ${y} (#percent%)",
+                indexLabel: "{name}",
+                legendText: "{name} (#percent%)",
+                indexLabelPlacement: "inside",
+                indexLabelFontFamily: "Microsoft JhengHei",
+                indexLabelFontColor: "white",
+                indexLabelFontSize: 14,
+                dataPoints: [
+                    { y: parseInt(numGender[0]), name: "男性" },
+                    { y: parseInt(numGender[1]), name: "女性" }
+                ]
+            }]
+            };
+            $("#Genderchart").CanvasJSChart(Genderopt);
+
+            function mysort(a, b) {
+                return a[0] - b[0]
+            }
+            
+            var CareerArray = [];
+            var CareerItem = [];
+
+            CareerVar.forEach(value=>{
+                if (CareerItem.length == 2) {
+                    CareerItem.push(value);
+                    CareerArray.push(CareerItem);
+                    CareerItem = [];
+                } else {
+                    CareerItem.push(value);
+                }
+            })
+            CareerArray.sort(mysort);
+            
+            var DataPoints = [];
+            CareerArray.forEach(value=>{
+                if (value[0] != 0) {
+                    DataPoints.push({
+                    y: parseInt(value[0]),
+                    label: value[1],
+                    indexLabel: value[2]
+                })
+                }
+            })
+            
+            var careeropt = {
+                animationEnabled: true,
+                title: {
+                    text: "職業",
+                    fontColor: "black",
+                    fontFamily: "Microsoft JhengHei",
+                    fontWeight: "bold",
+                    fontSize: 20
+                },
+                axisY: {
+                    tickThickness: 0,
+                    lineThickness: 0,
+                    valueFormatString: " ",
+                    gridThickness: 0
+                },
+                axisX: {
+                    tickThickness: 10,
+                    lineThickness: 5,
+                    labelFontSize: 14,
+                    valueFormatString: " ",
+                    labelFontColor: "brown",
+                    labelFontFamily: "Microsoft JhengHei",
+                    interval: 1,
+                },
+                data: [{
+                    indexLabelFontSize: 14,
+                    toolTipContent: "<span style=\"color:#62C9C3\">{indexLabel}:</span> <span style=\"color:#CD853F\"><strong>{y}</strong></span>",
+                    indexLabelPlacement: "inside",
+                    indexLabelFontColor: "white",
+                    indexLabelFontWeight: 400,
+                    indexLabelFontFamily: "Microsoft JhengHei ",
+                    color: "#014D65",
+                    type: "bar",
+                    dataPoints: DataPoints
+                }]
+            };
+            $("#Careerchart").CanvasJSChart(careeropt);
+            }
+    } 
+</script> {% endblock %}{% block style %}{% load static %}
+<link href="{% static 'css/userpattern.css' %}" rel="stylesheet"> {% endblock %} {% block content %}
+<h4 style="font-family:Microsoft JhengHei;font-weight:bold;text-align:center;margin-top:2em">★ 本站使用者基本資料 ★</h4>
+<div class="container">
+    <div class="row">
+        <div id="Genderchart" class="chartshow edit_border col-lg-6 col-md-6 col-sm-12"></div>
+        <div id="Careerchart" class="chartshow edit_border col-lg-6 col-md-6 col-sm-12"></div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends 'base.html' %} {% block script %}
+{% endblock %}
+{% block style %}{% load static %}
+{% endblock %}
+{% block content %} {% load static %}
+<form method="POST" class="formStyle" id='formc' style='font-family: Microsoft JhengHei; font-size: 16px !important;'>
+  <div id='showbox' style='margin-bottom:2em;'></div>
+  {% csrf_token %}  
+  <div class="form-group" style="margin-bottom:2em;">
+    <label for="accountname" class="col-form-label">Name輸入"Today"後可直接登入</label>
+    <div>
+      <input type="text" class="col-8 form-control" id="accountname" name="account" placeholder="account" onkeydown='keyLogin()'>
+    </div>
+  </div>
+  <div class="form-group" style="margin-bottom:2em;">
+    <label for="userpassword" class="col-form-label">Password</label>
+    <div>
+      <input type="password" class="col-8 form-control" id="userpassword" name="password" placeholder="Password" onkeydown='keyLogin()'>
+    </div>
+  </div>
+  <div class="form-group" style="margin-bottom:2em;">
+    <canvas id="canvasCaptcha" width="120" height="40"></canvas>
+    <div>
+  <div class="form-group" style="margin-bottom:2em;">
+      <input type="text" class="col-8 form-control" id="inputCaptcha" name="inputCaptcha" placeholder="請輸入驗證碼" onkeydown='keyLogin()'>
+    </div>
+  </div>
+  <div class="form-check" style='line-height: 20px !important; margin-bottom: 1.5em;'>
+    <input type="checkbox" class="form-check-input" style='height:20px !important;' id="exampleCheck1">
+    <label class="form-check-label" for="exampleCheck1">Remember Me</label>
+  </div>
+  <div class="form-group" style="margin-bottom:2em;">
+    <button type="button" class="btn btn-primary mt-2" id='loginto'>登入</button>
+  </div>
+</form>
+{% endblock %}
+{% block script2 %}
+<script>
+  var exampleCheck1 = document.getElementById('exampleCheck1');
+  exampleCheck1.addEventListener('change', function(){
+    if (exampleCheck1.checked == true){
+      window.localStorage.setItem('username', document.getElementById('accountname').value);
+    }else{
+      window.localStorage.removeItem('username');
+    }
+  })
+
+  if (window.localStorage.getItem('username')){
+    document.getElementById('accountname').value = window.localStorage.getItem('username');
+    exampleCheck1.checked = true;
+  }else{
+    document.getElementById('accountname').value = '';
+    exampleCheck1.checked = false;
+  }
+
+  //1.新建一個函式產生隨機數
+  function rn(min,max){
+    return  parseInt(Math.random()*(max-min)+min);
+  }
+  //2.新建一個函式產生隨機顏色
+  function rc(min,max){
+    var r=rn(min,max);
+    var g=rn(min,max);
+    var b=rn(min,max);
+    return `rgb(${r},${g},${b})`;
+  }
+  //3.填充背景顏色,顏色要淺一點
+  var w=120;
+  var h=40;
+  var c1 = document.getElementById("canvasCaptcha");
+  var ctx=c1.getContext("2d");
+  ctx.fillStyle=rc(180,230);
+  ctx.fillRect(0,0,w,h);
+  //4.隨機產生字串
+  var pool="ABCDEFGHIJKLIMNOPQRSTUVWSYZabcdefghijklmnopqrstuvwxyz1234567890";
+  textcollect = '';
+  for(var i=0;i<4;i++){
+  var c=pool[rn(0,pool.length)];//隨機的字
+  var fs=rn(18,40);//字型的大小
+  var deg=rn(-30,30);//字型的旋轉角度
+  ctx.font=fs+'px Simhei';
+  ctx.textBaseline="top";
+  ctx.fillStyle=rc(80,150);
+  ctx.save();
+  ctx.translate(30*i+15,15);
+  ctx.rotate(deg*Math.PI/180);
+  ctx.fillText(c,-15+5,-15);
+  ctx.restore();
+  textcollect = textcollect + c;
+  }
+  //5.隨機產生5條幹擾線,干擾線的顏色要淺一點
+  for(var i=0;i<5;i++){
+    ctx.beginPath();
+    ctx.moveTo(rn(0,w),rn(0,h));
+    ctx.lineTo(rn(0,w),rn(0,h));
+    ctx.strokeStyle=rc(180,230);
+    ctx.closePath();
+    ctx.stroke();
+    }
+  //6.隨機產生40個干擾的小點
+  for(var i=0;i<40;i++){
+    ctx.beginPath();
+    ctx.arc(rn(0,w),rn(0,h),1,0,2*Math.PI);
+    ctx.closePath();
+    ctx.fillStyle=rc(150,200);
+    ctx.fill();
+  }
+
+  function submitinto(){
+    if (document.getElementById('inputCaptcha').value.toUpperCase() == textcollect.toUpperCase()){
+      document.getElementById('formc').submit();
+    }else{
+      alert('驗證碼輸入錯誤，請重新輸入！');
+      window.location.href = '/';
+    }
+  }
+ 
+  document.getElementById('loginto').addEventListener('click', function(){
+    submitinto();
+  });
+
+function keyLogin(){ 
+  if (event.keyCode==13){  //回車鍵的鍵值為13 
+    submitinto(); //呼叫登入按鈕的登入事件 
+  }
+}
+
+function ShowTime(){
+  var today = new Date();
+  var month = today.getMonth()+1;
+  var day = today.getDate();
+  var hours = today.getHours();
+  var minutes = today.getMinutes();
+
+  if (month< 10){
+    month = '0' + String(month);
+  };  
+  
+  if (day < 10){
+    day = '0' + String(day);
+  };
+
+  if (hours < 10){
+    hours = '0' + String(hours);
+  };
+
+  if (minutes < 10){
+    minutes = '0' + String(minutes);
+  };
+
+　document.getElementById('showbox').innerHTML = "現在時間：" + today.getFullYear()+ "-" + month + "-" + day +"&nbsp;&nbsp;" + hours + ":" + minutes;
+　setTimeout('ShowTime()',1000);
+};
+
+ShowTime();
+</script>
+{% endblock %}

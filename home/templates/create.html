@@ -1,0 +1,126 @@
+{% extends 'base.html' %} {% block script %}
+{% endblock %}
+{% block style %}{% load static %}
+{% endblock %}
+{% block content %}{% load static %}
+<form method="POST" class="formStyle" style="font-family:Microsoft JhengHei; font-size:16px;">
+    {% csrf_token %}
+    <div class="form-group" style="margin-bottom:2em;">
+        <label for="account" class="form-group">帳號</label>
+        <div>
+            <input type="text" class="col-8 form-control" name="account" id="account" placeholder="User Account"
+                style="float:left;">
+            <p style="clear:both;font-size:16px;float:left;margin-top:1em;text-indent:-1em;color:red" class="col-8">
+            </p><br>
+        </div>
+    </div>
+    <div style="clear:both;margin-bottom:2em;" class="form-group" >
+        <label for="password" class="form-group">密碼</label>
+        <div>
+            <input type="password" class="col-8 form-control" name="password" id="password" placeholder="Password">
+        </div>
+    </div>
+    <div class="form-group" style="margin-bottom:2em;">
+        <label for="useremail" class="form-group">Email</label>
+        <div>
+            <input type="email" class="col-8 form-control" name="useremail" id="useremail" placeholder="User Email"
+                aria-describedby="emailHelp">
+        </div>
+    </div>
+    <div class="form-group align-items-center" style="margin-bottom:2em;">
+        <label class="mr-sm-2" for="usergender">性別</label>
+        <select class="col-8 form-control" id="usergender" name="usergender">
+            <option selected>請選擇</option>
+            <option value="男性">男性</option>
+            <option value="女性">女性</option>
+        </select>
+    </div>
+    <div class="form-group" style="margin-bottom:2em;">
+        <label for="userbirth" class="form-group">生日</label>
+        <div>
+            <input type="date" class="col-8 form-control" name="userbirth" id="userbirth" placeholder="Birthday">
+        </div>
+    </div>
+    <div class="form-group align-items-center" style="margin-bottom:2em;">
+        <label class="mr-sm-2" for="userCareer">職業</label>
+        <select class="col-8 form-control" id="userCareer" name="userCareer">
+            <option selected>請選擇</option>
+            <option value="金融業">金融業</option>
+            <option value="製造業">製造業</option>
+            <option value="軍公教">軍公教</option>
+            <option value="電子科技業">電子科技業</option>
+            <option value="傳統產業">傳統產業</option>
+            <option value="服務業">服務業</option>
+            <option value="媒體行銷公關">媒體行銷公關</option>
+            <option value="法律顧問">法律顧問</option>
+            <option value="自營商">自營商</option>
+            <option value="自由業(SOHO)">自由業(SOHO)</option>
+            <option value="學生">學生</option>
+            <option value="其他">其他</option>
+        </select>
+    </div>
+    <div class="form-group align-items-center" style="margin-bottom:2em;">
+        <label class="mr-sm-2" for="userResident">居住地</label>
+        <select class="col-8 form-control" id="userResident" name="userResident">
+            <option selected>請選擇</option>
+            <OPTGROUP label="北北基宜">
+                <option value="台北市">台北市</option>
+                <option value="新北市">新北市</option>
+                <option value="基隆市">基隆市</option>
+                <option value="宜蘭縣">宜蘭縣</option>
+            </OPTGROUP>
+            <OPTGROUP label="桃竹苗">
+                <option value="桃園市">桃園市</option>
+                <option value="新竹縣">新竹縣</option>
+                <option value="新竹市">新竹市</option>
+                <option value="苗栗縣">苗栗縣</option>
+            </OPTGROUP>
+            <OPTGROUP label="中彰投">
+                <option value="台中市">台中市</option>
+                <option value="彰化縣">彰化縣</option>
+                <option value="南投縣">南投縣</option>
+            </OPTGROUP>
+            <OPTGROUP label="雲嘉南">
+                <option value="雲林縣">雲林縣</option>
+                <option value="嘉義縣">嘉義縣</option>
+                <option value="嘉義市">嘉義市</option>
+                <option value="台南市">台南市</option>
+            </OPTGROUP>
+            <OPTGROUP label="高屏">
+                <option value="高雄市">高雄市</option>
+                <option value="屏東縣">屏東縣</option>
+            </OPTGROUP>
+            <OPTGROUP label="花東">
+                <option value="花蓮縣">花蓮縣</option>
+                <option value="台東縣">台東縣</option>
+            </OPTGROUP>
+            <OPTGROUP label="離島與外島">
+                <option value="澎湖縣">澎湖縣</option>
+                <option value="金門縣">金門縣</option>
+                <option value="連江縣">連江縣</option>
+            </OPTGROUP>
+        </select>
+    </div>
+    <!-- <div class="form-group align-items-center" style="margin-bottom:2em;">
+        <label class="mr-sm-2" for="recieved_mail">收到Taipei, and the Trip! 每週精選</label>
+        <select class="form-control col-8" id="received_mail" name="received_mail" value="{{member.received_mail}}">
+            <option selected>請選擇</option>
+            <option value="Yes" {% if member.received_mail  == 'Yes' %} selected {% endif %}>願意</option>
+            <option value="No" {% if not member.received_mail == 'No' %} selected {% endif %}>我現在還不想</option>
+        </select>
+    </div> -->
+    <div class="form-group" style="margin-bottom:2em;">
+        <button type="submit" class="btn btn-primary" style="font-size:16px;">新增</button>
+    </div>
+</form>
+{% endblock %} {% block script2 %}
+<script>
+    $(document).ready(function () {
+        $('#account').blur(function () {
+            var name = $(this).val();
+            $.get('/checkname/' + name, function (data) {
+                $('#account~p').text(data)
+            })
+        })
+    })
+</script> {% endblock %}

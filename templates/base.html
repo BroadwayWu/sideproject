@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+        integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Yuji+Boku&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+        crossorigin="anonymous"></script>
+    <style>
+        html, body {
+            width: auto !important;
+            overflow-x: hidden !important;
+        }
+        .formStyle {
+            margin-top: 3em;
+            margin-left: 2em;
+            font-size: 20px;
+        }
+    </style>
+    <title>Taipei, and the Trip!</title>
+    {% block script %} {% endblock %}{% block style %}{% endblock %}
+</head>
+<body style="font-family: 'Dancing Script',Microsoft JhengHei;padding: 0%;">
+    <nav class="navbar navbar-expand-lg navbar-light mb-0" style="font-size:18px;padding:0px;background-color: #e6e9f1">        
+        <a class="navbar-brand" style="color: #003c00;font-family: 'Dancing Script', cursive;font-weight: bolder;font-size:26px;padding-left: 1%; font-style:italic;"
+            href="#">Taipei, & the Trip !</a>&nbsp;&nbsp;
+        <a class="navbar-brand"  href="https://line.me/R/ti/p/%40luy7601g"><img height="36" src="/static/imgs/LINE_APP.png"></a>
+        <button class="navbar-toggler bg-light" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
+            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    {% if request.session.user %}
+                    <a class="nav-link text-dark" style="text-align:center;" href="{% url 'home:storymap' %}">&nbsp;&nbsp;故事地圖&nbsp;</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    {% if request.session.user %}
+                    <a class="nav-link text-dark" style="text-align:center;" href="{% url 'home:survey' %}">&nbsp;&nbsp;問卷調查&nbsp;</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    {% if request.session.user %}
+                    <a class="nav-link text-dark" style="text-align:center;" href="{% url 'home:userpattern' %}">&nbsp;&nbsp;使用者分析&nbsp;</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    {% if request.session.user %}
+                    <a class="nav-link text-dark" style="text-align:center;" href="{% url 'home:update' %}">&nbsp;&nbsp;個人資料&nbsp;</a>
+                    {% else %}
+                    <a class="nav-link text-dark" style="text-align:center;" href="{% url 'home:create' %}">&nbsp;&nbsp;註冊&nbsp;</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    {% if request.session.user %}
+                    <a class="nav-link text-dark" style="text-align:center; font-family:'Yuji Boku', serif; padding-top:4px !important;" href="/AllNewTest">&nbsp;&nbsp;All New Test&nbsp;</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    {% if request.session.user %}
+                    <a class="nav-link text-dark" style="text-align:center;" href="{% url 'home:logout' %}">&nbsp;&nbsp;登出&nbsp;</a>
+                    {% else %}
+                    <a class="nav-link text-dark" style="text-align:center;" href="{% url 'home:login' %}">&nbsp;&nbsp;登入&nbsp;</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <img class="img-fluid" src="/static/imgs/avi-richards-Z3ownETsdNQ-unsplash.jpg" alt="photo">
+    {% block content %}{% endblock %}
+    <div style="clear:both" class="card-body">
+        <blockquote class="blockquote mb-0">
+            <footer class="blockquote-footer" style="font-family: 'Dancing Script',Microsoft JhengHei;margin-top:2em;font-size:16px;text-align: right">2022 Broadway Wu -
+                broadwaywu@gmail.com</footer>
+        </blockquote>
+    </div>
+    {% block script2 %} {% endblock %}
+</body>
+
+</html>
+

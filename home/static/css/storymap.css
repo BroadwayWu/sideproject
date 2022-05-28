@@ -1,0 +1,35 @@
+.eleh4 {
+    font-weight: bold;
+    line-height: 3em;
+    margin-top: 1em;
+}
+
+.imgshow {
+    text-align: left;
+    padding: 0%;
+    margin-bottom: 1.5em;
+    border-radius: 5px;
+}
+
+.imgline {
+    text-align: center !important;
+    width: 120px;
+    height: 80px;
+    margin: 1% 2% 1% 0%;
+    border-radius: 5px;
+}
+
+.elememo {
+    font-size: 16px;
+    line-height: 2em;
+    text-align: justify;
+}
+
+.eleh5 {
+    font-size: 16px;
+    text-indent: 2em !important;
+    line-height: 2em;
+    text-align: justify;
+    margin-top: 1em;
+    margin-bottom: 3em;
+}

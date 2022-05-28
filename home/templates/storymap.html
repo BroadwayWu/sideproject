@@ -1,0 +1,128 @@
+{% extends 'base.html' %}{% block content %}
+<div class='container-fluid col-12' style='margin-bottom:2em;height:500px;' id='map'>
+</div>
+<div method='POST'  class='container-fluid' style='clear:both; font-family:Microsoft JhengHei; text-align:right;margin:2% 0% 0% 0%;'>
+    <input id='addressinput' name='address_in' type='text' class='col-6' style='height:35px' ; placeholder='Search Box'
+        onkeyup='go();'>
+    <input type='submit' value='景點搜尋' id='buttonAjax' onclick='codeAddress()' class='btn btn-warning' style='color:brown;font-size:16px;padding:0.25em;border-radius:5px;'>
+    <br>
+    <h5 id='alert' font-family='Microsoft JhengHei' style='color:red;padding-top:0.3em'>
+</div>
+<div id='nanoGallery' class='container-fluid' style='clear: both;text-align: left;'>
+</div>
+<div id='show' class='container-fluid' style='clear:both;font-family:Microsoft JhengHei;'>
+</div>
+{% endblock %}
+{% block script2 %}
+<link href='/static/css/lightbox.css'  rel='stylesheet'>
+<link href='/static/css/storymap.css' rel='stylesheet'>
+<script src='/static/js/jquery-ui.min-effect.js'></script>
+<script src='/static/js/lightbox.js'></script>
+<script>
+    function initAutocomplete() {
+        Scene_place = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(25.03, 121.54);
+        var myOptions = {
+            zoom: 13,
+            center: latlng,
+            mapTypeId: 'roadmap'
+        }
+        mapshow = new google.maps.Map(document.getElementById('map'), myOptions);
+    }
+    function go() {
+        if (event.keyCode == '13') {
+            document.getElementById('buttonAjax').click();
+        }
+    }
+    function codeAddress() {
+        var address = document.getElementById('addressinput').value;
+        Scene_place.geocode({ 'address': address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                getLocationResult = results[0].geometry.location
+                mapshow.setCenter(getLocationResult);
+                var markers = new google.maps.Marker({
+                    map: mapshow,
+                    position: results[0].geometry.location
+                });
+                markers.setTitle(address);
+
+                $('#alert').empty();
+                $('#show').empty();
+                $('#nanoGallery').empty();
+
+                if (String(addressinput.value) != '') {
+                    document.getElementById('show').style.clear = 'both';
+                    i = 0
+                    $.ajax({
+                        'type': 'GET',
+                        'url': '/static/files/travellocationCHINESE_edit.xml',
+                        'dataType': 'xml',
+                        'contentType': 'application/x-www-form-urlencoded;charset=utf-8',
+                    }).done(function (datas) {
+                        var docFragment = $(document.createDocumentFragment());
+                        $(datas).find('Section').each(function () {
+                            var theDIV = document.getElementById('show');
+                            var getLatLng = [
+                                parseFloat(String(getLocationResult).split(' ')[0].substr(1, 8)), 
+                                parseFloat(String(getLocationResult).split(' ')[1].substr(0, 8)), 
+                                parseFloat($(this).find('latitude').text()), 
+                                parseFloat($(this).find('longitude').text())
+                            ];
+
+                            if (getLatLng[2] <= (getLatLng[0] + 0.01) && getLatLng[2] >= (getLatLng[0] - 0.01) && getLatLng[3] <= (getLatLng[1] + 0.01) && getLatLng[3] >= (getLatLng[1] - 0.01) ) {
+                                var collectLocationInfoList = []
+                                var searchTagName = ['stitle', 'xbody', 'img:first', 'img', 'MEMO_TIME', 'address', 'info']
+                                searchTagName.forEach(element => 
+                                    collectLocationInfoList.push($(this).find(element).text())
+                                );
+
+                                var imgline = document.createElement('img');
+                                imgline.className = 'imgline';
+                                imgline.src = collectLocationInfoList[2];
+                                docFragment.append($('<a></a>').attr({ 'href': collectLocationInfoList[2], 'data-lightbox': 'park', 'data-title': collectLocationInfoList[0]}).append(imgline));
+                                
+                                var eleh4 = document.createElement('h4');
+                                eleh4.className = 'eleh4';
+                                eleh4.appendChild(document.createTextNode(collectLocationInfoList[0]));
+                                theDIV.appendChild(eleh4);
+
+                                var imgshow = document.createElement('img');
+                                imgshow.className = 'container-fluid col-4 imgshow';
+                                imgshow.src = collectLocationInfoList[2];
+                                theDIV.appendChild(imgshow);
+
+                                collectLocationMemoList = ['★ 開放時間：', '★ 位址資訊：', '★ 交通資訊：', '']
+                                collectLocationMemoList.forEach((element, index) => {
+                                    var textmemo = document.createElement('p');
+                                    if (index < 3 && collectLocationInfoList[index + 4] != ''){
+                                        textmemo.className = 'elememo';
+                                        textmemo.appendChild(document.createTextNode(collectLocationMemoList[index] + collectLocationInfoList[index + 4]));                                                                       
+                                    } else if (index == 3) {
+                                        textmemo.className = 'eleh5';
+                                        textmemo.appendChild(document.createTextNode(collectLocationInfoList[1]));
+                                    }
+                                    theDIV.appendChild(textmemo);
+                                })
+                            }
+                        })
+                        $('#nanoGallery').append(docFragment);
+                    })
+                }
+                else {
+                    var eleP = document.createElement('h5');
+                    eleP.style.textIndent = '3em';
+                    theDIV.appendChild(eleP.appendChild(document.createTextNode('請輸入景點名稱')));
+                }
+            }
+            else {
+                document.getElementById('alert').textContent = '未找到相關地點';
+                $('#show').empty();
+                $('#nanoGallery').empty();
+            }
+        })
+    }
+</script>
+<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAYJiMej9SFZViKKvWhPj6Ga8QV8hZZI9A&libraries=places&callback=initAutocomplete'
+    async defer>
+</script>
+{% endblock %}

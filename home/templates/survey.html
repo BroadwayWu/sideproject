@@ -1,0 +1,82 @@
+{% extends 'base.html' %} {% block script %}
+{% endblock %} {% block style %}{% load static %}
+{% endblock %} {% block content %}{% load static %}
+<form method="POST" style="font-family:Microsoft JhengHei; margin:2em 1.5em 2em 1.5em;">
+    {% csrf_token %}
+    <div class="form-group" style="margin-bottom:2em;">
+        <h6 style="line-height:2em;">{{member.account}} 您好！</h3><br>
+        <h6 style="text-indent:2em;line-height:2em;text-align: justify;text-justify:inter-ideograph;">為提升本站的服務品質，懇請您抽空填寫本站的滿意度調查，感謝您對本站的協助，謝謝！</h4>
+    </div>
+    <div class="form-group align-items-center" style="margin-bottom:2em;font-size:16px;">
+        <label class="mr-sm-2" style="text-align: justify;text-justify:inter-ideograph;" for="Q1">1. 請問您最近2週內有無使用Taipei, and the Trip!</label>
+        <select class="form-control col-8" id="Q1" name="Q1">
+            <option selected>請選擇</option>
+            <option value="有">有</option>
+            <option value="沒有">沒有</option>
+        </select>
+    </div>
+    <div class="form-group align-items-center" style="margin-bottom:2em;font-size:16px;">
+        <label class="mr-sm-2" style="text-align: justify;text-justify:inter-ideograph;" for="Q2">2. 請問您平均每2週使用Taipei, and the Trip!的次數</label>
+        <select class="form-control col-8" id="Q2" name="Q2">
+            <option selected>請選擇</option>
+            <option value="5次以上">5次以上</option>
+            <option value="4次">4次</option>
+            <option value="3次">3次</option>
+            <option value="2次">2次</option>
+            <option value="1次">1次</option>
+            <option value="0次">0次</option>
+        </select>
+    </div>
+    <div class="form-group align-items-center" style="margin-bottom:2em;font-size:16px;">
+        <label class="mr-sm-2" style="text-align: justify;text-justify:inter-ideograph;" for="Q3">3. 請問您對Taipei, and the Trip!的印象</label>
+        <select class="form-control col-8" id="Q3" name="Q3">
+            <option selected>請選擇</option>
+            <option value="5">非常良好</option>
+            <option value="4">良好</option>
+            <option value="3">普通</option>
+            <option value="2">不好</option>
+            <option value="1">非常不好</option>
+        </select>
+    </div>
+    <div class="form-group align-items-center" style="margin-bottom:2em;font-size:16px;">
+        <label class="mr-sm-2" style="text-align: justify;text-justify:inter-ideograph;" for="Q4">4. 請問Taipei, and the Trip!有無幫您解決問題</label>
+        <select class="form-control col-8" id="Q4" name="Q4">
+            <option selected>請選擇</option>
+            <option value="5">有 解決我所有問題</option>
+            <option value="4">有 解決我一半以上的問題</option>
+            <option value="3">普通 解決我一半的問題</option>
+            <option value="2">還好 解決我一半以下的問題</option>
+            <option value="1">沒有 完全沒有解決我的問題</option>
+        </select>
+    </div>
+    <div class="form-group align-items-center" style="margin-bottom:2em;font-size:16px;">
+        <label class="mr-sm-2" style="text-align: justify;text-justify:inter-ideograph;" for="Q5">5. 請問您是否喜歡Taipei, and the Trip!的服務</label>
+        <select class="form-control col-8" id="Q5" name="Q5">
+            <option selected>請選擇</option>
+            <option value="5">非常喜歡</option>
+            <option value="4">喜歡</option>
+            <option value="3">普通</option>
+            <option value="2">不喜歡</option>
+            <option value="1">非常不喜歡</option>
+        </select>
+    </div>
+    <div class="form-group align-items-center" style="margin-bottom:2em;font-size:16px;">
+        <label class="mr-sm-2" style="text-align: justify;text-justify:inter-ideograph;" for="Q6">6. 請問您是否願意持續使用Taipei, and the Trip!的服務</label>
+        <select class="form-control col-8" id="Q6" name="Q6">
+            <option selected>請選擇</option>
+            <option value="願意">願意</option>
+            <option value="不願意">不願意</option>
+        </select>
+    </div>
+    <div class="form-group" style="margin-bottom:2em;font-size:16px;">
+        <label style="text-align: justify;text-justify:inter-ideograph;" for="Q7">7. 請問您對Taipei, and the Trip!的建議</label>
+        <textarea class="form-control col-8" id="Q7" name="Q7" rows="5"></textarea>
+    </div>
+
+    <div class="form-group row" style="margin-top:2em;">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary" style="font-size:16px;">問卷結束 謝謝您的填答</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

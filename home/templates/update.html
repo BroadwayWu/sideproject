@@ -1,0 +1,97 @@
+{% extends 'base.html'%} {% block style %}{% load static %}
+{% endblock %} {% block content %}
+<form method="POST" id="personal_info" style="font-family:Microsoft JhengHei; margin:2em 1.5em 2em 1.5em;"  enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group" style="margin-bottom:2em;">
+        <label for="username" class="form-group">帳號</label>
+        <div>
+            <p class="col-8" name="account" id="username" value="{{member.account}}">{{member.account}}</p>
+        </div>
+    </div>
+    <div class="form-group" style="margin-bottom:2em;">
+        <label for="useremail" class="form-group">Email</label>
+        <div>
+            <input class="col-8 form-control" type="email" name="useremail" id="useremail" placeholder="User Email" value="{{member.useremail}}">
+        </div>
+    </div>
+    <div class="form-group align-items-center" style="margin-bottom:2em;">
+        <label class="mr-sm-2" for="usergender">性別</label>
+        <select class="col-8 form-control" id="usergender" name="usergender">
+            <option selected>請選擇</option>
+            <option value="男性" {% if member.gender == '男性' %} selected {% endif %}>男性</option>
+            <option value="女性" {% if member.gender == '女性' %} selected {% endif %}>女性</option>
+        </select>
+    </div>
+    <div class="form-group" style="margin-bottom:2em;">
+        <label for="userbirth" class="form-group">生日</label>
+        <div>
+            <input type="date" class="col-8 form-control" name="userbirth" id="userbirth" placeholder="Birthday" value="{{member.userbirth | date:'Y-m-d'}}">
+        </div>
+    </div>
+    <div class="form-group align-items-center" style="margin-bottom:2em;">
+        <label class="mr-sm-2" for="userCareer">職業</label>
+        <select class="form-control col-8 " id="userCareer" name="userCareer" value="{{member.career}}">
+            <option selected>請選擇</option>
+            <option value="金融業" {% if member.career == '金融業' %} selected {% endif %}>金融業</option>
+            <option value="製造業" {% if member.career == '製造業' %} selected {% endif %}>製造業</option>
+            <option value="軍公教" {% if member.career == '軍公教' %} selected {% endif %}>軍公教</option>
+            <option value="電子科技業" {% if member.career == '電子科技業' %} selected {% endif %}>電子科技業</option>
+            <option value="傳統產業" {% if member.career == '傳統產業' %} selected {% endif %}>傳統產業</option>
+            <option value="服務業" {% if member.career == '服務業' %} selected {% endif %}>服務業</option>
+            <option value="媒體行銷公關" {% if member.career == '媒體行銷公關' %} selected {% endif %}>媒體行銷公關</option>
+            <option value="法律顧問" {% if member.career == '法律顧問' %} selected {% endif %}>法律顧問</option>
+            <option value="自營商" {% if member.career == '自營商' %} selected {% endif %}>自營商</option>
+            <option value="自由業(SOHO)" {% if member.career == '自由業' %} selected {% endif %}>自由業(SOHO)</option>
+            <option value="學生" {% if member.career == '學生' %} selected {% endif %}>學生</option>
+            <option value="其他" {% if member.career == '其他' %} selected {% endif %}>其他</option>
+        </select>
+    </div>
+    <div class="form-group align-items-center" style="margin-bottom:2em;">
+        <label class="mr-sm-2" for="userResident">居住地</label>
+        <select class="form-control col-8" id="userResident" name="userResident" value="{{member.resident}}">
+            <option selected>請選擇</option>
+            <OPTGROUP label="北北基宜">
+                <option value="台北市" {% if member.resident == '台北市' %} selected {% endif %}>台北市</option>
+                <option value="新北市" {% if member.resident == '新北市' %} selected {% endif %}>新北市</option>
+                <option value="基隆市" {% if member.resident == '基隆市' %} selected {% endif %}>基隆市</option>
+                <option value="宜蘭縣" {% if member.resident == '宜蘭縣' %} selected {% endif %}>宜蘭縣</option>
+            </OPTGROUP>
+            <OPTGROUP label="桃竹苗">
+                <option value="桃園市" {% if member.resident == '桃園市' %} selected {% endif %}>桃園市</option>
+                <option value="新竹縣" {% if member.resident == '新竹縣' %} selected {% endif %}>新竹縣</option>
+                <option value="新竹市" {% if member.resident == '新竹市' %} selected {% endif %}>新竹市</option>
+                <option value="苗栗縣" {% if member.resident == '苗栗縣' %} selected {% endif %}>苗栗縣</option>
+            </OPTGROUP>
+            <OPTGROUP label="中彰投">
+                <option value="台中市" {% if member.resident == '台中市' %} selected {% endif %}>台中市</option>
+                <option value="彰化縣" {% if member.resident == '彰化縣' %} selected {% endif %}>彰化縣</option>
+                <option value="南投縣" {% if member.resident == '南投縣' %} selected {% endif %}>南投縣</option>
+            </OPTGROUP>
+            <OPTGROUP label="雲嘉南">
+                <option value="雲林縣" {% if member.resident == '雲林縣' %} selected {% endif %}>雲林縣</option>
+                <option value="嘉義縣" {% if member.resident == '嘉義縣' %} selected {% endif %}>嘉義縣</option>
+                <option value="嘉義市" {% if member.resident == '嘉義市' %} selected {% endif %}>嘉義市</option>
+                <option value="台南市" {% if member.resident == '台南市' %} selected {% endif %}>台南市</option>
+            </OPTGROUP>
+            <OPTGROUP label="高屏">
+                <option value="高雄市" {% if member.resident == '高雄市' %} selected {% endif %}>高雄市</option>
+                <option value="屏東縣" {% if member.resident == '屏東縣' %} selected {% endif %}>屏東縣</option>
+            </OPTGROUP>
+            <OPTGROUP label="花東">
+                <option value="花蓮縣" {% if member.resident == '花蓮縣' %} selected {% endif %}>花蓮縣</option>
+                <option value="台東縣" {% if member.resident == '台東縣' %} selected {% endif %}>台東縣</option>
+            </OPTGROUP>
+            <OPTGROUP label="離島與外島">
+                <option value="澎湖縣" {% if member.resident == '澎湖縣' %} selected {% endif %}>澎湖縣</option>
+                <option value="金門縣" {% if member.resident == '金門縣' %} selected {% endif %}>金門縣</option>
+                <option value="連江縣" {% if member.resident == '連江縣' %} selected {% endif %}>連江縣</option>
+            </OPTGROUP>
+        </select>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary"style="font-size:16px;">修改</button>
+        </div>
+    </div>
+</form>
+{% endblock %}
